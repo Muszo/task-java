@@ -2,7 +2,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -113,15 +112,17 @@ public class SizeStrategyIntegrationTest {
     }
 
     @Test
-    void folderTree_findBySize_stringVariant_parsesEnumAndUsesDefaultStrategy() {
+    void fileCabinet_findBySize_stringVariant_parsesEnumAndUsesDefaultStrategy() {
         // A node with exactly 5 children -> MEDIUM with SomeSizeStrategy
         MF root = new MF("Top", "NA", List.of(new LeafFolder("c1", "NA"), new LeafFolder("c2", "NA"), new LeafFolder("c3", "NA"), new LeafFolder("c4", "NA"), new LeafFolder("c5", "NA")));
-        FolderTree tree = new FolderTree(List.of(root));
 
-        assertTrue(containsByName(tree.findFoldersBySize("medium"), "Top"), "case-insensitive parse");
-        assertFalse(tree.findFoldersBySize("MEDIUM").isEmpty());
-        assertTrue(tree.findFoldersBySize("invalid").isEmpty(), "invalid enum returns empty");
-        assertTrue(tree.findFoldersBySize(null).isEmpty(), "null returns empty");
+        FileCabinet cab = new FileCabinet();
+        cab.addFolder("", root);
+
+        assertTrue(containsByName(cab.findFoldersBySize("medium"), "Top"), "case-insensitive parse");
+        assertFalse(cab.findFoldersBySize("MEDIUM").isEmpty());
+        assertTrue(cab.findFoldersBySize("invalid").isEmpty(), "invalid enum returns empty");
+        assertTrue(cab.findFoldersBySize(null).isEmpty(), "null returns empty");
     }
 
 
